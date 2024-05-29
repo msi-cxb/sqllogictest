@@ -63,7 +63,7 @@ User = root
 ## Run Test
 
 ```shell
-./src/sqllogictest -odbc DSN=MySQLDataSource  -verify ./test/select1.test
+./src/sqllogictest -odbc "DSN=MySQL;DATABASE=test;"  -verify ./test/select1.test
 ```
 
 
