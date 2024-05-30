@@ -62,8 +62,17 @@ User = root
 
 ## Run Test
 
+
+### Get Mysql Result
 ```shell
-./src/sqllogictest -odbc "DSN=MySQL;DATABASE=test;"  -verify ./test/select1.test
+./src/sqllogictest -odbc "DSN=Mysql;DATABASE=test;" ./test/select1.test  > mysql.select1.test
 ```
+
+### Verify 
+
+```shell
+./src/sqllogictest -odbc "DSN=Other;DATABASE=test;" -verify mysql.select1.test
+```
+
 
 
