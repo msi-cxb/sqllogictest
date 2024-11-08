@@ -14,15 +14,21 @@ CALL :fn_ConfigVisualStudio
 REM report the compiler architecture as a check
 CALL :fn_GetCompilerArch
 
-echo cleaning...
+%__DEBUGECHO% *******************************
+%__DEBUGECHO% *******************************
+cl
+%__DEBUGECHO% *******************************
+%__DEBUGECHO% *******************************
+
+%__DEBUGECHO% cleaning...
 nmake -f Makefile.msc clean
 if errorlevel 1 (echo clean error & goto :exit)
 
-echo building...
+%__DEBUGECHO% building...
 nmake -f Makefile.msc
 if errorlevel 1 (echo build error & goto :exit)
 
-echo complete.
+%__DEBUGECHO% complete.
 
 GOTO :exit
 
