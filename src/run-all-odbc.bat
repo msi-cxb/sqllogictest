@@ -2,6 +2,20 @@
 setlocal EnableDelayedExpansion
 cls
 
+REM bit is either 32 or 64
+set "bit="
+call set "bit=%%1"
+
+set "ARCH="
+set "CLARG="
+if defined bit (
+    goto :arg_exists
+)
+echo please include CLA for arch (32 or 64)
+goto :exit
+
+:arg_exists
+
 REM This runs all the tests and keeps track of errors.
 REM It will exit at the end with exit value set to number of errors.
 
@@ -9,7 +23,7 @@ set /a errors=0
 
 @echo STARTING...
 
-for /R ..\test %%i in (*.test) do sqllogictest --odbc "DSN=SQLite3 Datasource;DATABASE=:memory:;" --verify %%i & if "!ERRORLEVEL!" == "0" (
+for /R ..\test %%i in (*.test) do sqllogictest_!BIT! --odbc "DSN=SQLite3 Datasource;DATABASE=:memory:;" --verify %%i & if "!ERRORLEVEL!" == "0" (
     @echo total errors: !errors!
 ) else (
     set /a errors+=!ERRORLEVEL!
@@ -25,5 +39,7 @@ set /a errors-=2
 @echo COMPLETE total errors: !errors!
 
 exit /b !errors!
+
+:exit
 
 

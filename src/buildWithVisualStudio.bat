@@ -4,9 +4,28 @@ setlocal EnableDelayedExpansion
 SET __DEBUGECHO=ECHO
 IF NOT DEFINED __DEBUGECHO (SET __DEBUGECHO=REM)
 
-set "bit=64"
-set "ARCH=amd64"
+REM bit is either 32 or 64
+set "bit="
+call set "bit=%%1"
+
+set "ARCH="
 set "CLARG="
+if defined bit (
+    goto :arg_exists
+)
+echo please include CLA for arch (32 or 64)
+goto :exit
+
+:arg_exists
+
+if %bit%==32 (
+    set ARCH=x86
+) else if %bit%==64 (
+    set ARCH=amd64
+) else (
+    echo please provide either 32 or 64 as command line argument.
+    goto :EOF
+)
 
 REM setup Visual Studio
 CALL :fn_ConfigVisualStudio
@@ -27,6 +46,8 @@ if errorlevel 1 (echo clean error & goto :exit)
 %__DEBUGECHO% building...
 nmake -f Makefile.msc
 if errorlevel 1 (echo build error & goto :exit)
+
+move sqllogictest.exe sqllogictest_%bit%.exe 
 
 %__DEBUGECHO% complete.
 
